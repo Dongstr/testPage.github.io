@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>扫码添加客服</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        .phone-container {
+            position: relative;
+            width: 280px;
+            height: 550px;
+            margin: 0 auto;
+            background: #f8f9fa;
+            border-radius: 40px;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.3),
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                inset 0 3px 10px rgba(255, 255, 255, 0.8);
+            padding: 20px 15px;
+            border: 10px solid #222;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 手机顶部设计 */
+        .phone-top {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 25px;
+            background: #222;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+        
+        .speaker {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+        }
+        
+        /* 手机内容区域 */
+        .phone-content {
+            height: 100%;
+            background: white;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .phone-header {
+            padding: 25px 20px 15px;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .phone-header h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .phone-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .qrcode-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .instruction {
+            margin-bottom: 25px;
+            color: #555;
+        }
+        
+        .instruction h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #4facfe;
+        }
+        
+        .instruction p {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        /*.qrcode {*/
+        /*    width: 200px;*/
+        /*    height: 200px;*/
+        /*    background: #f0f4f8;*/
+        /*    border-radius: 12px;*/
+            /*display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    box-shadow: 0 5px 15px rgba(0,0,0,0.1);*/
+            /*position: relative;*/
+            /*overflow: hidden;*/
+        /*}*/
+        
+        .qrcode::before {
+            content: "";
+            /*position: absolute;*/
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, transparent 49%, #4facfe 50%, transparent 51%),
+                linear-gradient(225deg, transparent 49%, #00f2fe 50%, transparent 51%);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+        
+        .qrcode img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .hint {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #888;
+            padding: 0 20px;
+        }
+        
+        .home-button {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 15px;
+            width: 140px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature i {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            padding: 20px;
+        }
+        
+        /* 动画效果 */
+        /*@keyframes float {*/
+        /*    0%, 100% { transform: translateY(0); }*/
+        /*    50% { transform: translateY(-15px); }*/
+        /*}*/
+        
+        /*@keyframes fadeInDown {*/
+        /*    from {*/
+        /*        opacity: 0;*/
+        /*        transform: translateY(-20px);*/
+        /*    }*/
+        /*    to {*/
+        /*        opacity: 1;*/
+        /*        transform: translateY(0);*/
+        /*    }*/
+        /*}*/
+        
+        /*@keyframes pulse {*/
+        /*    0% { transform: scale(1); }*/
+        /*    50% { transform: scale(1.05); }*/
+        /*    100% { transform: scale(1); }*/
+        /*}*/
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .phone-container {
+                width: 260px;
+                height: 520px;
+            }
+            
+            .qrcode {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .qrcode img {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .features {
+                gap: 15px;
+            }
+            
+            .feature {
+                width: 120px;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>添加专属客服</h1>
+            <p>扫码添加客服微信咨询</p>
+        </div>
+        
+        <div class="phone-container">
+            <div class="phone-top">
+                <div class="speaker"></div>
+            </div>
+            
+            <div class="phone-content">
+                <div class="phone-header">
+                    <h2>长按识别扫码添加</h2>
+                    <p>专属客服一对一服务</p>
+                </div>
+                
+                <div class="qrcode-container">
+                    <div class="instruction">
+                        <h3>扫码添加客服</h3>
+                        <p>享受专业咨询服务</p>
+                    </div>
+                    
+                    <div class="qrcode pulse">
+                        <!-- 使用在线二维码图片示例 -->
+                        <img src="https://api.pwmqr.com/qrcode/create/?url=https://work.weixin.qq.com/ca/cawcde0e4d8dd50a69" alt="客服二维码">
+                    </div>
+                    
+                    <div class="hint">
+                        <p>长按二维码图片保存或识别添加客服</p>
+                    </div>
+                </div>
+                
+                <!--<div class="home-button">-->
+                <!--    <i class="fas fa-circle"></i>-->
+                <!--</div>-->
+            </div>
+        </div>
+        
+        <!--<div class="features">-->
+        <!--    <div class="feature">-->
+        <!--        <i class="fas fa-comments"></i>-->
+        <!--        <p>在线咨询</p>-->
+        <!--    </div>-->
+        <!--    <div class="feature">-->
+        <!--        <i class="fas fa-question-circle"></i>-->
+        <!--        <p>问题解答</p>-->
+        <!--    </div>-->
+        <!--    <div class="feature">-->
+        <!--        <i class="fas fa-gift"></i>-->
+        <!--        <p>专属福利</p>-->
+        <!--    </div>-->
+        <!--</div>-->
+        
+        <div class="footer">
+            <p>© 2025 客服中心 | 专业服务 值得信赖</p>
+        </div>
+    </div>
+    
+    <script>
+        // 添加简单的交互效果
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const qrcode = document.querySelector('.qrcode');
+            
+        //     qrcode.addEventListener('click', function() {
+        //         this.classList.add('pulse');
+        //         setTimeout(() => {
+        //             this.classList.remove('pulse');
+        //         }, 1000);
+        //     });
+            
+        //     // 模拟呼吸灯效果
+        //     setInterval(() => {
+        //         qrcode.classList.toggle('pulse');
+        //     }, 4000);
+        // });
+    </script>
+</body>
+</html>
